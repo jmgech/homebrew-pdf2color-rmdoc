@@ -3,9 +3,9 @@ class Pdf2colorRmdoc < Formula
 
   desc "Convert PDF to reMarkable .rmdoc using Drawj2d (Paper Pro color-aware)"
   homepage "https://github.com/jmgech/pdf2color-rmdoc"
-  url "https://github.com/jmgech/pdf2color-rmdoc/archive/b52f3b89cb7a005beb25849907a707f851fe108c.tar.gz"
+  url "https://github.com/jmgech/pdf2color-rmdoc/archive/refs/tags/v0.1.0.tar.gz"
   version "0.1.0"
-  sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+  sha256 "b1124c52fc23e2240abe80d3441b26210e19a9f43bcc62a289ed1eacb3ce6c13"
   license "MIT"
 
   depends_on "python@3.13"
