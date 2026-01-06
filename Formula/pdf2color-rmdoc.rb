@@ -18,7 +18,9 @@ class Pdf2colorRmdoc < Formula
 
   def install
     venv = virtualenv_create(libexec, "python3.13")
-    venv.pip_install_and_link buildpath
+
+    # Install the python package into the virtualenv (no linking into prefix/bin)
+    venv.pip_install buildpath
 
     # Unpack Drawj2d into libexec/drawj2d-dist (directory)
     resource("drawj2d").stage do
@@ -35,8 +37,8 @@ class Pdf2colorRmdoc < Formula
     EOS
     chmod 0755, libexec/"drawj2d"
 
-    # Ensure our CLI uses the private Drawj2d (no bin/drawj2d, avoids conflicts)
-    bin.write_env_script bin/"pdf2color-rmdoc", {
+    # Expose only our CLI (no bin/drawj2d to avoid conflicts)
+    (bin/"pdf2color-rmdoc").write_env_script libexec/"bin/pdf2color-rmdoc", {
       "PDF2COLOR_RMDOC_DRAWJ2D" => (libexec/"drawj2d")
     }
   end
