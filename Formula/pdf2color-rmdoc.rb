@@ -5,7 +5,7 @@ class Pdf2colorRmdoc < Formula
   homepage "https://github.com/jmgech/pdf2color-rmdoc"
   url "https://github.com/jmgech/pdf2color-rmdoc/archive/refs/tags/v0.1.0.tar.gz"
   version "0.1.0"
-  sha256 "b1124c52fc23e2240abe80d3441b26210e19a9f43bcc62a289ed1eacb3ce6c13"
+  sha256 "46f8400e1b54f7de0f9152afcb81c39d5e5bee261d94e5d984ceaf5d1057e6a0"
   license "MIT"
 
   depends_on "python@3.13"
@@ -20,22 +20,29 @@ class Pdf2colorRmdoc < Formula
     venv = virtualenv_create(libexec, "python3.13")
     venv.pip_install_and_link buildpath
 
+    # Unpack Drawj2d into libexec/drawj2d-dist (directory)
     resource("drawj2d").stage do
-      (libexec/"drawj2d").install Dir["*"]
+      (libexec/"drawj2d-dist").install Dir["*"]
     end
 
-    jar = (libexec/"drawj2d").glob("**/*.jar").first
+    jar = (libexec/"drawj2d-dist").glob("**/*.jar").first
     odie "Drawj2d jar not found" unless jar
 
-    (bin/"drawj2d").write <<~EOS
+    # Private Drawj2d wrapper: libexec/drawj2d (file)
+    (libexec/"drawj2d").write <<~EOS
       #!/bin/bash
       exec "#{Formula["openjdk"].opt_bin}/java" -jar "#{jar}" "$@"
     EOS
-    chmod 0755, bin/"drawj2d"
+    chmod 0755, libexec/"drawj2d"
+
+    # Ensure our CLI uses the private Drawj2d (no bin/drawj2d, avoids conflicts)
+    bin.write_env_script bin/"pdf2color-rmdoc", {
+      "PDF2COLOR_RMDOC_DRAWJ2D" => (libexec/"drawj2d")
+    }
   end
 
   test do
     system "#{bin}/pdf2color-rmdoc", "-h"
-    system "#{bin}/drawj2d", "-h"
+    system "#{libexec}/drawj2d", "-h"
   end
 end
