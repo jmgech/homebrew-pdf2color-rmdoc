@@ -5,7 +5,7 @@ class Pdf2colorRmdoc < Formula
   homepage "https://github.com/jmgech/pdf2color-rmdoc"
   url "https://github.com/jmgech/pdf2color-rmdoc/archive/refs/tags/v0.1.0.tar.gz"
   version "0.1.0"
-  sha256 "46f8400e1b54f7de0f9152afcb81c39d5e5bee261d94e5d984ceaf5d1057e6a0"
+  sha256 "b1124c52fc23e2240abe80d3441b26210e19a9f43bcc62a289ed1eacb3ce6c13"
   license "MIT"
 
   depends_on "python@3.13"
